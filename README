@@ -3,15 +3,15 @@ low-level user actions.
 
 Currently, several commands are available:
 
-    pdfextract: extract some pages from a PDF
+    pdfextract: extract some pages from a PDF file
 
       pdfmerge: merge several PDF files
 
-  pdfpagecount: return the number of pages inside of a PDF file
+  pdfpagecount: return the number of pages inside a PDF file
 
       pdfsplit: split one or more PDF files to a bunch of one-page PDF
                 files
 
 The documentation is available as POD inside of each script.
 
-Prerequisites: PDF::API2, Pod::Usage
+Prerequisites: PDF::API2 and Pod::Usage Perl modules
