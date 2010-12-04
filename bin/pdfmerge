@@ -1,0 +1,90 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use Getopt::Long;
+use PDF::API2;
+use Pod::Usage;
+
+my ( $output, $verbose, $force, $help );
+my $result = GetOptions(
+    "output=s" => \$output,
+    "verbose"  => \$verbose,
+    "force"    => \$force,
+    "help"     => \$help,
+);
+
+# How can we use this?
+pod2usage(1) if $help or @ARGV lt 1;
+
+my $new_file = $output ? $output : join '+', @ARGV;
+if ( -f $new_file ) {
+    die "won't overwrite without '--force'" unless $force;
+}
+my $new_pdf = PDF::API2->new();
+
+for my $old_file (@ARGV) {
+    my $old_pdf = PDF::API2->open($old_file);
+    if ($verbose) {
+        print "read '$old_file': ", $old_pdf->pages, " page",
+          $old_pdf->pages gt 1 ? 's' : '', "\n";
+    }
+    $new_pdf->importpage( $old_pdf, $_ ) for 1 .. $old_pdf->pages;
+    $old_pdf->end();
+}
+
+
+$new_pdf->saveas($new_file);
+$new_pdf->end();
+
+if ($verbose) {
+    $new_pdf = PDF::API2->open($new_file);
+    print "wrote '$new_file': ", $new_pdf->pages, " page",
+      $new_pdf->pages gt 1 ? 's' : '', "\n";
+}
+
+__END__
+
+=head1 NAME
+
+pdfmerge - merges pages from several PDF files into a single one
+
+=head1 DESCRIPTION
+
+This program is intended to merge some PDF files into one single file.
+
+=head1 SYNOPSIS
+
+ pdfmerge [--verbose|-v] [-f|--force] [-o|--output <output file>] <input file>,...
+ pdfmerge -h|--help
+
+=head1 OPTIONS
+
+=over 4
+
+=item -o specify an output file
+
+=item -v be verbose
+
+=item -f overwrite output file
+
+=item -h print this help message
+
+=back
+
+=head1 BUGS
+
+Of course. I mean, possibly. If you find some, please drop me an email about
+that.
+
+=head1 COPYRIGHT
+
+pdfmerge is Copyright (C) 2008-2010, Laurent Gautrot
+
+This program is free software; you can redistribute it or modify it under the
+same terms as Perl itself.
+
+=head1 AUTHOR
+
+Laurent Gautrot <l.gautrot@free.fr>
+
+=cut

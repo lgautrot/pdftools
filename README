@@ -1,0 +1,17 @@
+PDFTools is a set of Perl scripts written for the purpose of
+low-level user actions.
+
+Currently, several commands are available:
+
+    pdfextract: extract some pages from a PDF
+
+      pdfmerge: merge several PDF files
+
+  pdfpagecount: return the number of pages inside of a PDF file
+
+      pdfsplit: split one or more PDF files to a bunch of one-page PDF
+                files
+
+The documentation is available as POD inside of each script.
+
+Prerequisites: PDF::API2, Pod::Usage
