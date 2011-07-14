@@ -37,7 +37,7 @@ foreach my $item (@items) {
 # process pages
 my $old_pdf = PDF::API2->open($input);
 my $new_pdf = PDF::API2->new();
-print "$input: ", $old_pdf->pages, " pages\n" if $verbose;
+print "read '$input': ", $old_pdf->pages, " pages\n" if $verbose;
 
 for my $page_num (@pages) {
     warn "skipping page #$page_num", next if $page_num > $old_pdf->pages;
@@ -52,7 +52,7 @@ elsif ( -e $output and not -f $output ) {
     warn "'$output' is not a regular file. Please check.\n";
 }
 elsif ( not -e $output or ( -f $output and $force ) ) {
-    print "$output: ", $new_pdf->pages, " pages\n" if $verbose;
+    print "wrote '$output': ", $new_pdf->pages, " pages\n" if $verbose;
     $new_pdf->saveas($output);
 }
 

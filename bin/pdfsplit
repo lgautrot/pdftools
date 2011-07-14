@@ -36,7 +36,7 @@ foreach my $item (@items) {
 # process pages
 for my $old_file (@ARGV) {
     my $old_pdf = PDF::API2->open($old_file);
-    print "$old_file: ", $old_pdf->pages, " pages\n" if $verbose;
+    print "read '$old_file': ", $old_pdf->pages, " pages\n" if $verbose;
     my @pages = 1 .. $old_pdf->pages unless @requested_pages;
     for my $page_num (@pages) {
         warn "skipping page #$page_num" if $page_num > $old_pdf->pages;
@@ -49,13 +49,13 @@ for my $old_file (@ARGV) {
         my $inc = sprintf( "%03i", $page_num );
         ( my $new_file = $old_file ) =~ s/.pdf$/-$inc.pdf/;
         $new_pdf->saveas("$new_file");
-        print "saved '$new_file'\n" if $verbose;
+        print "wrote '$new_file'\n" if $verbose;
         $new_pdf->end();
     }
     $old_pdf->end();
     if ($delete) {
         unlink $old_file or warn("could not delete '$old_file': $!\n"), next;
-        print "deleted '$old_file'...\n" if $verbose;
+        print "deleted '$old_file'\n" if $verbose;
     }
 }
 

@@ -3,11 +3,12 @@ use strict;
 use warnings;
 use Getopt::Long;
 use PDF::API2;
+use Pod::Usage;
 
 my ( $verbose, $help );
 my $result = GetOptions(
-    "verbose"  => \$verbose,
-    "help"     => \$help,
+    "verbose" => \$verbose,
+    "help"    => \$help,
 );
 
 # How can we use this?
@@ -21,9 +22,15 @@ sub pdf_page_count {
     return $page_count;
 }
 
-foreach (@ARGV) {
-    print( (@ARGV gt 1 or $verbose)? "$_: ": '');
-    print pdf_page_count($_), "\n";
+foreach my $filename (@ARGV) {
+    my $count = pdf_page_count($filename);
+    if ( @ARGV gt 1 or $verbose ) {
+        print "'$filename': $count page" . ( ( $count gt 1 ) ? 's' : '' );
+    }
+    else {
+        print $count;
+    }
+    print "\n";
 }
 
 __END__
@@ -35,7 +42,7 @@ pdfpagecount - reports number of pages in PDF files
 =head1 DESCRIPTION
 
 This program is intended to display the page count of pages in PDF file(s) passed
-as argumesnts on the command-line.
+as arguments on the command-line.
 
 =head1 SYNOPSIS
 
